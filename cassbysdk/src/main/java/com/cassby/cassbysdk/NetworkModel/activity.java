@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class activity {
 
-    public ArrayList<Check> checks = new ArrayList<Check>();
+    public ArrayList<Check> check = new ArrayList<Check>();
     public ArrayList<CheckItem> check_item = new ArrayList<CheckItem>();
     public ArrayList<Payment> payment = new ArrayList<Payment>();
 }

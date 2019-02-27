@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PostActivity {
 
     Retrofit retrofit;
-    String url = "https://cassby.com/api/";
+    String url = "http://192.168.0.15:3002/";
 
     public PostActivity() {
 

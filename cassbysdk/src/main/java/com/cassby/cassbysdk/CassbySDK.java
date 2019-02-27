@@ -72,7 +72,7 @@ public class CassbySDK {
             public ActivityRoot apply(List<Check> checks, List<CheckItem> checkItems, List<Payment> payments) throws Exception {
                 ActivityRoot a = new ActivityRoot();
                 a.activity.check_item.addAll(checkItems) ;
-                a.activity.checks.addAll(checks);
+                a.activity.check.addAll(checks);
                 a.activity.payment.addAll(payments);
                 return a;
             }
@@ -81,40 +81,43 @@ public class CassbySDK {
             public void accept(ActivityRoot activityRoot) throws Exception {
                 Retrofit retrofit = new PostActivity().getRetrofit();
                 PostActivityApi api = retrofit.create(PostActivityApi.class);
-                api.postActivity(token, activityRoot)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<ActivityResponse>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
 
-                            }
+                if (activityRoot.activity.check.isEmpty() == false && activityRoot.activity.check_item.isEmpty() == false && activityRoot.activity.payment.isEmpty() == false) {
+                    api.postActivity(token, activityRoot)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<ActivityResponse>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
 
-                            @Override
-                            public void onNext(ActivityResponse activityResponse) {
-                                for (int i = 0; i < activityResponse.check.size(); i++) {
-                                    deleteCheck(activityResponse.check.get(i).uuid);
                                 }
 
-                                for (int i = 0; i < activityResponse.check_item.size(); i++) {
-                                    deleteCheckItem(activityResponse.check_item.get(i).uuid);
+                                @Override
+                                public void onNext(ActivityResponse activityResponse) {
+                                    for (int i = 0; i < activityResponse.check.size(); i++) {
+                                        deleteCheck(activityResponse.check.get(i).uuid);
+                                    }
+
+                                    for (int i = 0; i < activityResponse.check_item.size(); i++) {
+                                        deleteCheckItem(activityResponse.check_item.get(i).uuid);
+                                    }
+
+                                    for (int i = 0; i < activityResponse.check.size(); i++) {
+                                        deletePayment(activityResponse.payment.get(i).uuid);
+                                    }
                                 }
 
-                                for (int i = 0; i < activityResponse.check.size(); i++) {
-                                    deletePayment(activityResponse.payment.get(i).uuid);
+                                @Override
+                                public void onError(Throwable e) {
+                                    Log.d("TAG", e.getLocalizedMessage());
                                 }
-                            }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.d("TAG", e.getLocalizedMessage());
-                            }
+                                @Override
+                                public void onComplete() {
 
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
+                                }
+                            });
+                }
             }
         });
     }

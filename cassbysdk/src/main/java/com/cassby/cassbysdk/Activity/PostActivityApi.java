@@ -11,6 +11,6 @@ import retrofit2.http.Query;
 
 public interface PostActivityApi {
 
-    @POST("/api/v2/app/activity")
+    @POST("/activity")
     Observable<ActivityResponse> postActivity(@Query("token") String token, @Body ActivityRoot request);
 }

@@ -10,10 +10,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        CassbySDK.getInstance().launch(this, "1lQi4Zv4io4FyOlwlrW9T8AlpTMEyEtD");
-
-        CassbySDK.getInstance().initCheck();
-        CassbySDK.getInstance().addToCheck("Картошка",5000,1.0);
-        CassbySDK.getInstance().commit();
+        CassbySDK.getInstance().launch(this, "WyIxbFFpNFp2NGlvNEZ5T2x3bHJXOVQ4QWxwVE1FeUV0RCIsICIxMCIsICIwIl0=");
     }
 }
