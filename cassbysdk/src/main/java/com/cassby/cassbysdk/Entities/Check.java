@@ -24,9 +24,10 @@ public class Check {
     public List<CheckItem> items = new ArrayList<CheckItem>();
     @Ignore
     public Payment payment;
+    public int id_branch;
 
-    public Check() {
-
+    public Check(int id_branch) {
+        this.id_branch = id_branch;
     }
     public void addCheckItem(String name, int price, double qty) {
         this.items.add(new CheckItem(this, qty, price,  name));

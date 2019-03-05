@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     EditText name;
     EditText price;
     EditText qty;
+    EditText branch;
     Button submit;
 
     @Override
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         name = findViewById(R.id.main_name);
         price = findViewById(R.id.main_price);
         qty = findViewById(R.id.main_qty);
+        branch = findViewById(R.id.main_branch);
 
         submit = findViewById(R.id.main_submit_button);
 
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveCheck() {
-        CassbySDK.getInstance().initCheck();
+        CassbySDK.getInstance().initCheck(Integer.parseInt(branch.getText().toString()));
         CassbySDK.getInstance().addToCheck(name.getText().toString(),Integer.parseInt(price.getText().toString()),Double.valueOf(qty.getText().toString()));
         CassbySDK.getInstance().commit();
 

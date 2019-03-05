@@ -123,8 +123,8 @@ public class CassbySDK {
     }
 
 
-    public void initCheck() {
-        this.check = new Check();
+    public void initCheck(int id_branch) {
+        this.check = new Check(id_branch);
     }
 
     public void addToCheck(String name, int price, Double qty) {

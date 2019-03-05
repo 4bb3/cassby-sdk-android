@@ -44,6 +44,19 @@
         android:hint="Цена"
         android:inputType="number"/>
 
+    <EditText
+        android:id="@+id/main_branch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_price"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:hint="Филиал"
+        android:inputType="number"/>
+
 
     <Button
         android:id="@+id/main_submit_button"
@@ -51,7 +64,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_price"
+        app:layout_constraintTop_toBottomOf="@id/main_branch"
         android:text="Go!"/>
 
 
