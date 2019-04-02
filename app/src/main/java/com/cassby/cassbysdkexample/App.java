@@ -10,6 +10,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-            CassbySDK.getInstance().launch(this, "WyJmRDZmTEpxWTVuUE9QQ0J5M3l0V3RTVkdneVdqajRPUiIsICIxMSJd  ");
+        CassbySDK.getInstance().launch(this, "WyJzMnFzQ0tJZDI4UWJyeG9uUTN3UU5yT0NyaWhla1FHNCIsICIyNSJd");
     }
 }
