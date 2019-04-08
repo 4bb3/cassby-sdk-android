@@ -67,56 +67,76 @@ public class CassbySDK {
     }
 
     public void loadAndSendToServer() {
-        Maybe.zip(loadChecks(), loadCheckItems(), loadPayments(), new Function3<List<Check>, List<CheckItem>, List<Payment>, ActivityRoot>() {
+
+        loadChecks().subscribe(new Consumer<List<Check>>() {
             @Override
-            public ActivityRoot apply(List<Check> checks, List<CheckItem> checkItems, List<Payment> payments) throws Exception {
-                ActivityRoot a = new ActivityRoot();
-                a.activity.check_item.addAll(checkItems) ;
-                a.activity.check.addAll(checks);
-                a.activity.payment.addAll(payments);
-                return a;
-            }
-        }).subscribe(new Consumer<ActivityRoot>() {
-            @Override
-            public void accept(ActivityRoot activityRoot) throws Exception {
-                Retrofit retrofit = new PostActivity().getRetrofit();
-                PostActivityApi api = retrofit.create(PostActivityApi.class);
+            public void accept(final List<Check> checks) throws Exception {
+                for (int i = 0; i < checks.size(); i++) {
 
-                if (activityRoot.activity.check.isEmpty() == false && activityRoot.activity.check_item.isEmpty() == false && activityRoot.activity.payment.isEmpty() == false) {
-                    api.postActivity(token, activityRoot)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<ActivityResponse>() {
+                    final String uuid = checks.get(i).uuid;
+
+                    loadCheckItems(uuid).subscribe(new Consumer<List<CheckItem>>() {
+                        @Override
+                        public void accept(final List<CheckItem> checkItems) throws Exception {
+                            loadPayments(uuid).subscribe(new Consumer<List<Payment>>() {
                                 @Override
-                                public void onSubscribe(Disposable d) {
+                                public void accept(List<Payment> payments) throws Exception {
+                                    ActivityRoot activityRoot = new ActivityRoot();
+                                    activityRoot.activity.check_item.addAll(checkItems) ;
+                                    activityRoot.activity.check.addAll(checks);
+                                    activityRoot.activity.payment.addAll(payments);
 
-                                }
+                                    Retrofit retrofit = new PostActivity().getRetrofit();
+                                    PostActivityApi api = retrofit.create(PostActivityApi.class);
 
-                                @Override
-                                public void onNext(ActivityResponse activityResponse) {
-                                    for (int i = 0; i < activityResponse.check.size(); i++) {
-                                        deleteCheck(activityResponse.check.get(i).uuid);
+                                    if (activityRoot.activity.check.isEmpty() == false && activityRoot.activity.check_item.isEmpty() == false && activityRoot.activity.payment.isEmpty() == false) {
+                                        api.postActivity(token, activityRoot)
+                                                .subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(new Observer<ActivityResponse>() {
+                                                    @Override
+                                                    public void onSubscribe(Disposable d) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onNext(ActivityResponse activityResponse) {
+                                                        for (int i = 0; i < activityResponse.check.size(); i++) {
+
+                                                            String uuid = activityResponse.check.get(i).uuid;
+
+                                                            deleteCheck(uuid);
+
+                                                            for (int j = 0; j < activityResponse.check_item.size(); j++) {
+
+                                                                if (activityResponse.check_item.get(j).uuid_check.equals(uuid)) {
+                                                                    deleteCheckItem(uuid);
+                                                                }
+                                                            }
+
+                                                            for (int k = 0; k < activityResponse.check_item.size(); k++) {
+                                                                if (activityResponse.payment.get(k).uuid_check.equals(uuid)) {
+                                                                    deletePayment(uuid);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Throwable e) {
+                                                        Log.d("TAG", e.getLocalizedMessage());
+                                                    }
+
+                                                    @Override
+                                                    public void onComplete() {
+
+                                                    }
+                                                });
                                     }
-
-                                    for (int i = 0; i < activityResponse.check_item.size(); i++) {
-                                        deleteCheckItem(activityResponse.check_item.get(i).uuid);
-                                    }
-
-                                    for (int i = 0; i < activityResponse.check.size(); i++) {
-                                        deletePayment(activityResponse.payment.get(i).uuid);
-                                    }
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    Log.d("TAG", e.getLocalizedMessage());
-                                }
-
-                                @Override
-                                public void onComplete() {
-
                                 }
                             });
+                        }
+                    });
                 }
             }
         });
@@ -176,20 +196,21 @@ public class CassbySDK {
 
     public Maybe<List<Check>> loadChecks() {
         return db.checkDao().getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
     }
 
-    public Maybe<List<CheckItem>> loadCheckItems() {
-        return db.checkItemDao().getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public Maybe<List<CheckItem>> loadCheckItems(String uuid) {
+        return db.checkItemDao().getByUuid(uuid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
     }
 
-    public Maybe<List<Payment>> loadPayments() {
-        return db.paymentDao().getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public Maybe<List<Payment>> loadPayments(String uuid) {
+        return db.paymentDao().getByUuid(uuid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+
     }
 
 }

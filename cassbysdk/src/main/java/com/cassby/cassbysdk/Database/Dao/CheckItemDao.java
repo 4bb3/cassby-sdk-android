@@ -15,13 +15,13 @@ import io.reactivex.Single;
 @Dao
 public interface CheckItemDao {
 
-    @Query("SELECT * FROM `checkitem`")
-    Maybe<List<CheckItem>> getAll();
+    @Query("SELECT * FROM `checkitem` WHERE uuid_check = :uuid")
+    Maybe<List<CheckItem>> getByUuid(String uuid);
 
     @Insert
     void insertCheckItem(CheckItem item);
 
-    @Query("DELETE FROM `checkitem` WHERE uuid = :uuid")
+    @Query("DELETE FROM `checkitem` WHERE uuid_check = :uuid")
     void deleteByUuid(String uuid);
 
 }

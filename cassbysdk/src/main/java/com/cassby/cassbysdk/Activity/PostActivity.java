@@ -8,10 +8,10 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PostActivity {
+public class    PostActivity {
 
     Retrofit retrofit;
-    String url = "https://middle.cassby.com/";
+    String url = "https://public.cassby.com/";
 
     public PostActivity() {
 

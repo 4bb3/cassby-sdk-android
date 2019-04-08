@@ -16,13 +16,13 @@ import io.reactivex.Single;
 @Dao
 public interface PaymentDao {
 
-    @Query("SELECT * FROM `payment`")
-    Maybe<List<Payment>> getAll();
+    @Query("SELECT * FROM `payment` WHERE uuid_check = :uuid")
+    Maybe<List<Payment>> getByUuid(String uuid);
 
     @Insert
     void insertPayment(Payment payment);
 
-    @Query("DELETE FROM `payment` WHERE uuid = :uuid")
+    @Query("DELETE FROM `payment` WHERE uuid_check = :uuid")
     void deleteByUuid(String uuid);
 
 }
