@@ -42,7 +42,7 @@ public class App extends Application {
 2. When you want to submit a sale
 
 ```
-CassbySDK.getInstance().initCheck(BRANCH_ID);
+CassbySDK.getInstance().initCheck(BRANCH_ID, PNEID);
 CassbySDK.getInstance().addToCheck(POSITION_NAME, PRICE_IN_KOPS, QTY);
 CassbySDK.getInstance().addToCheck(SECOND_POSITION_NAME, PRICE_IN_KOPS, QTY);
 CassbySDK.getInstance().commit();
