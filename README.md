@@ -17,7 +17,7 @@ Add the dependency
 
 ```
 dependencies {
-	 implementation 'com.github.4bb3:cassby-sdk-android:1.0.0'
+	 implementation 'com.github.4bb3:cassby-sdk-android:1.0.1'
 }
 ```
 
