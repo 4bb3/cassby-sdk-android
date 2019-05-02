@@ -21,10 +21,11 @@ public class Payment {
     public String method = "card";
     public String status = "success";
     public String pne_error_code = "";
+    public String pne_id = "";
 
     public Payment() {}
 
-    public Payment(Check check) {
+    public Payment(Check check, String pne_id) {
         this.uuid_check = check.uuid;
 
         int total = 0;
@@ -34,6 +35,7 @@ public class Payment {
         }
 
         this.amount = total;
+        this.pne_id = pne_id;
     }
 
 }

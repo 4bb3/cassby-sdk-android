@@ -52,7 +52,9 @@ public class CassbySDK {
     }
 
     public void launch(Context context, String token) {
-        db = Room.databaseBuilder(context, Database.class, "database-name").build();
+        db = Room.databaseBuilder(context, Database.class, "database-name")
+                .fallbackToDestructiveMigration()
+                .build();
         this.token = token;
 
         Observable.interval(syncPeriod, TimeUnit.SECONDS)
@@ -143,8 +145,8 @@ public class CassbySDK {
     }
 
 
-    public void initCheck(int id_branch) {
-        this.check = new Check(id_branch);
+    public void initCheck(int id_branch, String pneId) {
+        this.check = new Check(id_branch, pneId);
     }
 
     public void addToCheck(String name, int price, Double qty) {

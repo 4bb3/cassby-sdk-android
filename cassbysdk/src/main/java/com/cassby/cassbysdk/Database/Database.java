@@ -13,7 +13,7 @@ import com.cassby.cassbysdk.Entities.Check;
 import com.cassby.cassbysdk.Entities.CheckItem;
 import com.cassby.cassbysdk.Entities.Payment;
 
-@android.arch.persistence.room.Database(entities = {Check.class, CheckItem.class, Payment.class}, version = 1, exportSchema = false)
+@android.arch.persistence.room.Database(entities = {Check.class, CheckItem.class, Payment.class}, version = 2, exportSchema = false)
 public abstract class Database extends RoomDatabase {
     public abstract CheckDao checkDao();
     public abstract CheckItemDao checkItemDao();

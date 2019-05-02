@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveCheck() {
-        CassbySDK.getInstance().initCheck(Integer.parseInt(branch.getText().toString()));
+        CassbySDK.getInstance().initCheck(Integer.parseInt(branch.getText().toString()), "321");
         CassbySDK.getInstance().addToCheck(name.getText().toString(),Integer.parseInt(price.getText().toString()),Double.valueOf(qty.getText().toString()));
         CassbySDK.getInstance().commit();
 
